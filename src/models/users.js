@@ -47,11 +47,15 @@ const userSchema = new mongoose.Schema({
             type: String,
             required : true
         }
-    }]
+    }],
+    avatar : {
+        type : Buffer
+    }
  },
+    
  {
      timestamps: true
- }
+ },
  );
 // this is not stored in the database this is meant for relationship
  userSchema.virtual('task', {
@@ -66,6 +70,7 @@ const userSchema = new mongoose.Schema({
 
      delete userObject.password;
      delete userObject.tokens;
+     delete userObject.avatar;
 
      return userObject;
  }
