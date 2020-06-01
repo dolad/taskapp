@@ -13,6 +13,35 @@ const port = process.env.PORT || 3000;
 
 // })
 
+const multer = require('multer');
+const upload = multer({
+  dest: 'images/',
+  limits : {
+    fieldSize: 1000000
+  },
+  fileFilter(req,file,cb){
+    if(!file.originalname.match(/\.(doc|docx)$/)){
+      return cb(new Error('Please upload a word document'));
+  }
+
+  cb(undefined,Error);
+}
+
+})
+
+//  this is how error is handled in express
+// const errmiddleware = (req, res, next) => {
+//   throw new Error("this is from my middleware error");
+// }
+
+app.post('/profile', upload.single('upload'),  (req, res) => {
+  res.send();
+}, (err, req, res, next) => {
+  res.status(400).send({err: err.message});
+})
+
+// __________________________________ //
+
 app.use(express.json());
 app.use(userRouter);
 app.use(taskRouter);
@@ -20,6 +49,8 @@ app.use(taskRouter);
 app.listen(port, () => {
   console.log(`app is running on port : ${port}`);
 });
+
+
 
 // const jwt =require('jsonwebtoken');
 
@@ -49,7 +80,7 @@ app.listen(port, () => {
 const Task = require('./models/task');
 const User = require('./models/users');
 
-const main = async () => {
+// const main = async () => {
   //  getting task with user id
   // const task = await Task.findById("5ed42e2fc7548f5dfbeb402f");
   // await task.populate('owner').execPopulate()
@@ -61,6 +92,6 @@ const main = async () => {
   // await user.populate('task').execPopulate();
   // console.log(user.task);
 
-}
+// }
 
-main()
+// main()
