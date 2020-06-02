@@ -6,8 +6,8 @@ const auth = async (req, res, next) => {
         // get token from bearer
         const token = req.header('Authorization').replace('Bearer ', '');
       
-        // verify the token
-        const decoded = jwt.verify(token, 'thisisfornode');
+        // verify the token 
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         // use the id from the verify to find user that has stored token
         const user = await User.findOne({_id : decoded._id, "tokens.token": token})
 
